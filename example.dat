@@ -1,0 +1,9 @@
+# Lines starting with '#' will be ignored by our parser
+#
+# Dummy data
+#(string)	(integer)	(float)		(boolean)
+#NAME		AGE			WEIGHT		STUDENT
+Jack		18			75.2		1
+Daniel		19			68.5		0
+Laura		19			62.0		1
+Linda		18			58.4		0
