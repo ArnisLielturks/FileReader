@@ -13,5 +13,5 @@ public:
     //Read the actual data from the file
     void ReadValues();
 private:
-    std::ifstream _file;
+    ifstream _file;
 };
