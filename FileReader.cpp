@@ -14,39 +14,41 @@ FileReader::~FileReader()
 //Read the data from the file
 void FileReader::ReadValues()
 {
-    std::string name, line;
-    int age;
-    float weight;
-    bool student;
-
-    cout << "NAME\t\tAGE\t\tWEIGHT\t\tSTUDENT" << endl << endl;
+    std::string line;
 
     while(getline(_file, line)) {
         //Clear the previously set values
-        name.clear();
-        age = 0;
-        weight = 0.0f;
-        student = false;
+
+        FileValue<string, int, float, bool> parse;
+        parse.name.clear();
+        parse.age = 0;
+        parse.weight = 0.0f;
+        parse.student = false;
+
 
         std::stringstream ss(line);
 
         //Read the first value from the line
-        ss >> name;
+        ss >> parse.name;
 
         // If the line starts with '#' or if it's an empty line, skip that line
-        if (name.compare(0, 1, "#") == 0 || name.empty()) {
+        if (parse.name.compare(0, 1, "#") == 0 || parse.name.empty()) {
             continue;
         }
 
-
         //Read "age" value from the line
-        ss >> age;
+        ss >> parse.age;
         //Read "weight" value from the line
-        ss >> weight;
+        ss >> parse.weight;
         //Read "student" value from the line
-        ss >> student;
+        ss >> parse.student;
 
-        cout << name << "\t\t" << age << "\t\t" << weight << "\t\t" << student << endl;
+        _data.push_back(parse);
 
     }
+}
+
+vector< FileValue<string, int, float, bool> > FileReader::getData()
+{
+    return _data;
 }
