@@ -19,7 +19,7 @@ void FileReader::ReadValues()
     while(getline(_file, line)) {
         //Clear the previously set values
 
-        FileValue<string, int, float, bool> parse;
+        FILE_DATA_TYPES parse;
         parse.name.clear();
         parse.age = 0;
         parse.weight = 0.0f;
@@ -48,7 +48,7 @@ void FileReader::ReadValues()
     }
 }
 
-vector< FileValue<string, int, float, bool> > FileReader::getData()
+vector<FILE_DATA_TYPES> FileReader::getData()
 {
     return _data;
 }

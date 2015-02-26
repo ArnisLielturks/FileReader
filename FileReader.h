@@ -26,9 +26,9 @@ public:
     //Read the actual data from the file
     void ReadValues();
 
-    vector< FILE_DATA_TYPES > getData();
+    vector<FILE_DATA_TYPES> getData();
 private:
     ifstream _file;
     //Vector of file data with data types declared
-    vector< FILE_DATA_TYPES > _data;
+    vector<FILE_DATA_TYPES> _data;
 };
