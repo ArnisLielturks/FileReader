@@ -9,6 +9,7 @@ FileReader::FileReader(const std::string filename)
 //Dtor
 FileReader::~FileReader()
 {
+    _file.close();
 }
 
 //Read the data from the file

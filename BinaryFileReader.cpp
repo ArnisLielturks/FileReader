@@ -9,6 +9,7 @@ BinaryFileReader::BinaryFileReader(const std::string filename)
 //dtor
 BinaryFileReader::~BinaryFileReader()
 {
+    _file.close();
 }
 
 void BinaryFileReader::ReadValues()
