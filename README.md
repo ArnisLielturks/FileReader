@@ -11,4 +11,8 @@ OR
 g++ main.cpp FileReader.cpp BinaryFileReader.cpp -o main.o
 ```
 
+After that you can run this example by running the following command
+```
+./main.o
+```
 See the "example.dat" to see the structure of the text file.
