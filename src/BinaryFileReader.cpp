@@ -48,6 +48,7 @@ void BinaryFileReader::ReadValues()
             }
         }
 
+        //Convert from char array to int/float
         int *result = (int*)id;
         float *result2 = (float*)size;
         float *result3 = (float*)size2;
@@ -64,17 +65,17 @@ void BinaryFileReader::ReadValues()
 void BinaryFileReader::SaveValues()
 {
     if(_file.is_open()) {
-        //Store integer values from 0 - 9 in file
+        //New struct
         AwesomeFileHeader header;
+        //Add some data to the struct
         header.ID = 1991;
 
-        string name = "This is longer than expected value";
-        // *name[sizeof(AwesomeFileHeader().name) - 2] = "\\";
-        // *name[sizeof(AwesomeFileHeader().name) - 1] = "0";
-        // strcpy(header.name, name.c_str());
+        string name = "Oops!";
         for(int i = 0; i < sizeof(AwesomeFileHeader().name) - 1; i++) {
             header.name[i] = name[i];
         }
+
+        //Add the string ending char
         header.name[sizeof(AwesomeFileHeader().name) - 1] = '\0';
 
         header.width = 222.2f;
@@ -87,10 +88,6 @@ void BinaryFileReader::SaveValues()
             _file.put(data[i]);
             cout << data[i] << endl;
         }
-        // for(int i = 0; i < sizeof(data); i++) {
-        //     _file.put(data[i]);
-        //     // cout << data[i] << endl;
-        // }
     } else {
         cout << "Error while openning file" << endl;
     }
