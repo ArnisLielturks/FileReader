@@ -52,9 +52,9 @@ void BinaryFileReader::ReadValues()
         int *result = (int*)id;
         float *result2 = (float*)size;
         float *result3 = (float*)size2;
-
+		string obj_name = string(title);
         cout << "ID         :" << *result << endl;
-        cout << "Name       :" << string(title) << endl;
+        cout << "Name       :" << obj_name << endl;
         cout << "width      :" << *result2 << endl;
         cout << "height     :" << *result3 << endl;
     } else {
@@ -72,7 +72,8 @@ void BinaryFileReader::SaveValues()
 
         string name = "Oops!";
         for(int i = 0; i < sizeof(AwesomeFileHeader().name) - 1; i++) {
-            header.name[i] = name[i];
+			if (i < name.size()) 
+				header.name[i] = name[i];
         }
 
         //Add the string ending char
