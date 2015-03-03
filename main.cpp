@@ -18,9 +18,8 @@ int main()
 
 	//############## BINARY FILE READER ##############
 
-	BinaryFileReader reader2("venus.bmp");
-	reader2.setOutFile("venus-backup.bmp");
-//	reader2.SaveValues();
+	BinaryFileReader reader2("example_binary.bin");
+	reader2.SaveValues();
 	reader2.ReadValues();
 
 	return 0;
