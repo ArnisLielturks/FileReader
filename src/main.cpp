@@ -1,5 +1,5 @@
-#include "FileReader.h"
-#include "BinaryFileReader.h"
+#include "../includes/FileReader.h"
+#include "../includes/BinaryFileReader.h"
 
 int main()
 {

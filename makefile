@@ -2,6 +2,6 @@
 CC=g++
 
 all:
-	$(CC) *.cpp -o main.o
+	$(CC) **/*.cpp -o main.o
 clean:
 	rm *.o

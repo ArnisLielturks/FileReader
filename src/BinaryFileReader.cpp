@@ -1,4 +1,4 @@
-#include "BinaryFileReader.h"
+#include "../includes/BinaryFileReader.h"
 
 //ctor
 BinaryFileReader::BinaryFileReader(const std::string filename)
