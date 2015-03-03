@@ -2,13 +2,13 @@ Simple file reader in C++. Examples included
 
 To compile use this command:
 ```
-g++ *.cpp -o main.o
+make
 ```
 
-OR
+To clean the project
 
 ```
-g++ main.cpp FileReader.cpp BinaryFileReader.cpp -o main.o
+make clean
 ```
 
 After that you can run this example by running the following command
