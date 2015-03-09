@@ -66,7 +66,7 @@ void BinaryFileReader::ReadValues()
   //       int *result = (int*)id;
   //       float *result2 = (float*)size;
   //       float *result3 = (float*)size2;
-		string obj_name = string(title);
+        string obj_name = string(title);
   //       int *vertCount = (int*)vCount;
   //       cout << "ID         :" << *result << endl;
         cout << "Name       :" << obj_name << endl;
@@ -106,8 +106,8 @@ void BinaryFileReader::SaveValues()
 
         string name = "Oops! I didnt want this to happen Im really sorry. HA!";
         for(int i = 0; i < BYTE_AWS_NAME - 1; i++) {
-			if (i < name.size() - 1) {
-				header.name[i] = name[i];
+            if (i < name.size() - 1) {
+                header.name[i] = name[i];
             } else {
                 header.name[i] = '\0';
             }
