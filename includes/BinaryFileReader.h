@@ -2,6 +2,7 @@
 #include <fstream>
 #include <cstring>
 #include <stdlib.h>
+#include <vector>
 
 using namespace std;
 
@@ -42,10 +43,10 @@ public:
     void SaveValues();
 private:
     fstream _file;
-
+    vector<AwesomeFileBody> _vertices;
     char _readInt[4];
     char _readFloat[4];
 
-    void storeInt(char intByte, int pos);
-    void storeFloat(char intByte, int pos);
+    void storeInt(char intByte, int pos, int &value);
+    void storeFloat(char intByte, int pos, float &value);
 };

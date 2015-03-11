@@ -19,80 +19,102 @@ void BinaryFileReader::ReadValues()
         //Go to the beggining of the file
         _file.seekg(0);
         int i = 0;
-        int k = 0;
+
+        //Which byte we are reading from Awesome File Body
+        int byteNum = 0;
+        //Which value we are reading X,Y,Z from Awesome File Body
+        int valueNum = 0;
+
         char single_char;
-        char id[4];
         char *title = new char[AWS_NAME_SIZE];
-        char size[4];
-        char size2[4];
-        char vCount[4];
 
         char temp[4];
-
+        AwesomeFileHeader awesome;
+        AwesomeFileBody awesomeBody;
         cout << "name sizeof " << BYTE_AWS_NAME << endl;
         while(_file.good() && !_file.eof()) {
-            //Read char from the file
             if(_file.get(single_char)) {
 
                 if (i < BYTE_INT) {
-                    // id[i] = single_char;
-                    storeInt(single_char, i);
-                    // cout << "Reading int byte" << endl;
-
+                    //Read the ID
+                    storeInt(single_char, i, awesome.ID);
                 } else if (i < BYTE_INT + BYTE_AWS_NAME) {
-                    title[i - BYTE_INT] = single_char;
+                    //Read the title
+                    awesome.name[i - BYTE_INT] = single_char;
                 } else if (i < BYTE_INT + BYTE_AWS_NAME + BYTE_FLOAT) {
-                    storeFloat(single_char, i - (BYTE_INT + BYTE_AWS_NAME));
+                    //Read the width
+                    storeFloat(single_char, i - (BYTE_INT + BYTE_AWS_NAME), awesome.width);
                 } else if (i < BYTE_INT + BYTE_AWS_NAME + BYTE_FLOAT * 2) {
-                    storeFloat(single_char, i - (BYTE_INT + BYTE_AWS_NAME + BYTE_FLOAT));
+                    //Read the height
+                    storeFloat(single_char, i - (BYTE_INT + BYTE_AWS_NAME + BYTE_FLOAT), awesome.height);
                 } else if (i < BYTE_INT + BYTE_AWS_NAME + BYTE_FLOAT * 2 + BYTE_INT) {
-                    storeInt(single_char, i - (BYTE_INT + BYTE_AWS_NAME + BYTE_FLOAT * 2));
+                    //Read the vertice count
+                    storeInt(single_char, i - (BYTE_INT + BYTE_AWS_NAME + BYTE_FLOAT * 2), awesome.verticeCount);
                 } else {
-                    // cout << "K " << k << endl;
-                    // temp[k] = single_char;
-                    storeFloat(single_char, k);
-                    k++;
-                    if (k > 3) {
-                        k = 0;
-                    //     float *t = (float*)temp;
-                    //     cout << "Reading vector value " << *t << endl;
+                    //Store float value after each 4 bytes
+                    float t;
+                    storeFloat(single_char, byteNum, t);
+                    byteNum++;
+                    if (byteNum > 3) {
+                        byteNum = 0;
+
+                        switch(valueNum) {
+                            case 0:
+                                awesomeBody.x = t;
+                                break;
+                            case 1:
+                                awesomeBody.y = t;
+                                break;
+                            case 2:
+                                awesomeBody.z = t;
+                                break;
+                        }
+                        valueNum++;
+
+                        //After 3 float values update vertice vector
+                        if (valueNum > 2) {
+                            _vertices.push_back(awesomeBody);
+                            valueNum = 0;
+                        }
                     }
                 }
                 i++;
             }
         }
 
-        //Convert from char array to int/float
-  //       int *result = (int*)id;
-  //       float *result2 = (float*)size;
-  //       float *result3 = (float*)size2;
-        string obj_name = string(title);
-  //       int *vertCount = (int*)vCount;
-  //       cout << "ID         :" << *result << endl;
-        cout << "Name       :" << obj_name << endl;
-  //       cout << "width      :" << *result2 << endl;
-  //       cout << "height     :" << *result3 << endl;
-  //       cout << "vertice count : " << *vertCount << endl;
+        string obj_name = string(awesome.name);
+        cout << "ID         : " << awesome.ID << endl;
+        cout << "Name       : " << obj_name << endl;
+        cout << "Width      : " << awesome.width << endl;
+        cout << "Height     : " << awesome.height << endl;
+        cout << "Vertices   : " << awesome.verticeCount << endl;
+        cout << "================" << endl;
+        for(int i=0; i < _vertices.size(); i++) {
+            cout << "Vertice [" << _vertices.at(i).x << ",\t\t" << _vertices.at(i).y << ",\t\t" << _vertices.at(i).z << "]" << endl;
+        }
+
     } else {
         cout << "Error while openning file!" << endl;
     }
 }
 
-void BinaryFileReader::storeInt(char intByte, int pos)
+void BinaryFileReader::storeInt(char intByte, int pos, int &value)
 {
     _readInt[pos] = intByte;
     if (pos == 3) {
         int *t = (int*)_readInt;
-        cout << "Int ready --- " << *t << endl;
+        value = *t;
+        // cout << "Int ready --- " << *t << endl;
     }
 }
 
-void BinaryFileReader::storeFloat(char intByte, int pos)
+void BinaryFileReader::storeFloat(char intByte, int pos, float &value)
 {
     _readFloat[pos] = intByte;
     if (pos == 3) {
         float *t = (float*)_readFloat;
-        cout << "Float ready --- " << *t << endl;
+        value = *t;
+        // cout << "Float ready --- " << *t << endl;
     }
 }
 
@@ -130,14 +152,14 @@ void BinaryFileReader::SaveValues()
         }
 
         //Append body
-        AwesomeFileBody tempBody;
-        tempBody.x = 3.1;
-        tempBody.y = 4.1;
-        tempBody.z = 5.1;
-        char *body = new char[BYTE_AWS_BODY];
-        memcpy(body, &tempBody, BYTE_AWS_BODY);
         for (int k = 0; k < 4; k++) {
             for(int i = 0; i < BYTE_AWS_BODY; i++) {
+                AwesomeFileBody tempBody;
+                tempBody.x = k * i * 0.5f;
+                tempBody.y = k + i + 0.2f;
+                tempBody.z = k + i + 0.5f;
+                char *body = new char[BYTE_AWS_BODY];
+                memcpy(body, &tempBody, BYTE_AWS_BODY);
                 _file.put(body[i]);
                 // cout << body[i] << endl;
             }
