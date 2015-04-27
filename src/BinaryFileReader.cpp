@@ -101,6 +101,7 @@ void BinaryFileReader::ReadValues()
 void BinaryFileReader::storeInt(char intByte, int pos, int &value)
 {
     _readInt[pos] = intByte;
+    //Only 4 bytes for the INT (32bit)
     if (pos == 3) {
         int *t = (int*)_readInt;
         value = *t;
@@ -111,6 +112,7 @@ void BinaryFileReader::storeInt(char intByte, int pos, int &value)
 void BinaryFileReader::storeFloat(char intByte, int pos, float &value)
 {
     _readFloat[pos] = intByte;
+    //Only 4 bytes for the FLOAT
     if (pos == 3) {
         float *t = (float*)_readFloat;
         value = *t;
@@ -126,11 +128,13 @@ void BinaryFileReader::SaveValues()
         //Add some data to the struct
         header.ID = 1991;
 
-        string name = "Oops! I didnt want this to happen Im really sorry. HA!";
+        string name = "My name is Arnis. I\'m 24 years old.12345678901234567890123456";
         for(int i = 0; i < BYTE_AWS_NAME - 1; i++) {
-            if (i < name.size() - 1) {
+            //Copy only BYTE_AWS_NAME -1 chars
+            if (i < BYTE_AWS_NAME - 1) {
                 header.name[i] = name[i];
             } else {
+                //End the string with the end-line char
                 header.name[i] = '\0';
             }
         }
@@ -141,7 +145,8 @@ void BinaryFileReader::SaveValues()
         header.width = 222.2f;
         header.height = 333.3f;
 
-        header.verticeCount = 10;
+        int verticesToSave = 5;
+        header.verticeCount = verticesToSave;
         char *data = new char[BYTE_AWS];
         memcpy(data, &header, BYTE_AWS);
         cout << "File size " << BYTE_AWS << endl;
@@ -152,7 +157,7 @@ void BinaryFileReader::SaveValues()
         }
 
         //Append body
-        for (int k = 0; k < 4; k++) {
+        for (int k = 0; k < verticesToSave; k++) {
             for(int i = 0; i < BYTE_AWS_BODY; i++) {
                 AwesomeFileBody tempBody;
                 tempBody.x = k * i * 0.5f;
